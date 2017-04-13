@@ -79,6 +79,8 @@ sum(diag(prop.table(ct)))
 #### Quadratic Discriminant Analysis #####
 ##########################################
 
+fit2 <- qda(children ~ ., data=BudgetUK,CV=TRUE)
+fit2
 
 
 
