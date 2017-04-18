@@ -65,33 +65,47 @@ for (b in (1:B)) {
   trainwY <- BudgetUK$children[inTrain]
   testwY <- BudgetUK$children[-inTrain]
   
+  
+  # CART
   fit<-train(children~.,data=BudgetUK[inTrain,],method="rpart",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   
+  
+  # Random Forest
   ERRMAT[b,1]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw") 
   
+  
+  # KNN
   ERRMAT[b,2]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   
+  
+  # LDA
   ERRMAT[b,3]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgeyestUK[-inTrain,-10],type="raw")
   
+  
+  # QDA
   ERRMAT[b,4]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="qda",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   
+  # PDA
   ERRMAT[b,5]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="pda",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   
+  
+  # NB - Negative Binomial
   ERRMAT[b,6]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   
+  # MDA - mixture da
   ERRMAT[b,7]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="mda",tuneLength=15,trControl=ctrl)
   pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
@@ -99,7 +113,10 @@ for (b in (1:B)) {
   ERRMAT[b,8]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   print(b)
 }
-bp <- boxplot(ERRMAT,names=c("CART","RF","knn","lda","qda","pda","nb","mda"))
+bp <- boxplot(ERRMAT,
+              ylab="Cross Validation Error",
+              col = 2:8,
+              names=c("CART","RF","knn","lda","qda","pda","nb","mda"))
 
 
 
