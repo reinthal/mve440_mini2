@@ -73,49 +73,50 @@ for (b in (1:B)) {
   # CART
   fit <- train(children~.,data=BudgetUK[inTrain,],method="rpart",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,1] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # Random Forest
-  ERRMAT[b,1] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit<-train(children~.,data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw") 
-  
+  ERRMAT[b,2] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # KNN
-  ERRMAT[b,2] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,3] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # LDA
-  ERRMAT[b,3] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgeyestUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,4] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # QDA
-  ERRMAT[b,4] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="qda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  ERRMAT[b,5] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # PDA
-  ERRMAT[b,5] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="pda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,6] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # NB - Negative Binomial
-  ERRMAT[b,6] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,7] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # MDA - mixture da
-  ERRMAT[b,7] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="mda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
   ERRMAT[b,8] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   print(b)
 }
 
@@ -178,43 +179,44 @@ for (b in (1:B)) {
   ERRMAT[b,1] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit <- train(children~.,data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw") 
-  
+  ERRMAT[b,2] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # KNN
-  ERRMAT[b,2] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,3] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # LDA
-  ERRMAT[b,3] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgeyestUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,4] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # QDA
-  ERRMAT[b,4] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+ 
   fit <- train(children~.,data=BudgetUK[inTrain,],method="qda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  ERRMAT[b,5] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # PDA
-  ERRMAT[b,5] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="pda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,6] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # NB - Negative Binomial
-  ERRMAT[b,6] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   fit <- train(children~.,data=BudgetUK[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
+  ERRMAT[b,7] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # MDA - mixture da
-  ERRMAT[b,7] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+ 
   fit <- train(children~.,data=BudgetUK[inTrain,],method="mda",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
-  
   ERRMAT[b,8] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
+  
   print(b)
 }
 
