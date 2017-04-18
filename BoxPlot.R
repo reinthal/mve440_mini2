@@ -3,7 +3,6 @@ rm(list=ls())
 # Garbage Collect
 gc()
 
-installset.seed(10)
 
 ########## Librarys
 
@@ -26,7 +25,7 @@ library(ranger)
 
 # Data we want to examine
 data(BudgetUK, package = "Ecdat")
-data(Computers,package = "Ecdat")
+data(Computers, package = "Ecdat")
 
 
 
@@ -43,16 +42,8 @@ BudgetUK$children  <-  newfac
 # create data partitions for training and testing
 inTrain  <-  createDataPartition( BudgetUK$children , p=3/4, list=FALSE)
 
-# Training data
-trainW  <-  BudgetUK[inTrain,-10]
-testW  <-  BudgetUK[-inTrain,-10]
-
-# Training labels
-trainwY  <-  BudgetUK$children[inTrain]
-testwY  <-  BudgetUK$children[-inTrain]
-
 # Compute the error B times
-B  <-  50
+B  <-  1
 ERRMAT  <-  matrix(0,B,8)
 
 # set the validation method to cross validation
@@ -90,7 +81,7 @@ for (b in (1:B)) {
   # LDA
   
   fit <- train(children~.,data=BudgetUK[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgeyestUK[-inTrain,-10],type="raw")
+  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   ERRMAT[b,4] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # QDA
@@ -152,7 +143,7 @@ trainwY  <-  BudgetUK$children[inTrain]
 testwY  <-  BudgetUK$children[-inTrain]
 
 # Compute the error B times
-B <- 50
+B <- 1
 ERRMAT <- matrix(0,B,8)
 
 # set the validation method to cross validation
@@ -190,7 +181,7 @@ for (b in (1:B)) {
   # LDA
   
   fit <- train(children~.,data=BudgetUK[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgeyestUK[-inTrain,-10],type="raw")
+  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   ERRMAT[b,4] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # QDA

@@ -15,6 +15,9 @@ ensemble <- function(labels, data, method, nrEnsembles){
     trainY <- labels[fold]
     testY <- labels[-fold]
     
+    # set the validation method to cross validation
+    ctrl <- trainControl(method="cv",summaryFunction=multiClassSummary)
+    
     
   }
   
