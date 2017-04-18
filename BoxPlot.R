@@ -1,9 +1,15 @@
+# clear memory
+rm(list=ls())
+# Garbage Collect
+gc()
+
 installset.seed(10)
 
 ########## Librarys
 
 
 library(Ecdat)
+library(rpart)
 library(class)
 library(MASS)
 library(scatterplot3d)
@@ -44,13 +50,11 @@ testW <- BudgetUK[-inTrain,-10]
 trainwY <- BudgetUK$children[inTrain]
 testwY <- BudgetUK$children[-inTrain]
 
-# set the validation method to repeated cross validation
-ctrl <- trainControl(method="repeatedcv",repeats=10,summaryFunction=multiClassSummary)
-
 # Compute the error B times
 B<-50
 ERRMAT<-matrix(0,B,8)
 
+# set the validation method to cross validation
 ctrl<-trainControl(method="cv",summaryFunction=multiClassSummary)
 
 for (b in (1:B)) {
@@ -66,7 +70,7 @@ for (b in (1:B)) {
   
   ERRMAT[b,1]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
-  pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw") 
   
   ERRMAT[b,2]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
@@ -74,7 +78,7 @@ for (b in (1:B)) {
   
   ERRMAT[b,3]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
-  pp<-predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  pp<-predict(fit,newdata=BudgeyestUK[-inTrain,-10],type="raw")
   
   ERRMAT[b,4]<-length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   fit<-train(children~.,data=BudgetUK[inTrain,],method="qda",tuneLength=15,trControl=ctrl)
