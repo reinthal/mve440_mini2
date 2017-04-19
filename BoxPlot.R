@@ -68,7 +68,7 @@ for (b in (1:B)) {
   
   # Random Forest
   
-  fit<-train(children~., data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
+  fit<-train(children~.,data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw") 
   ERRMAT[b,2] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
@@ -123,6 +123,9 @@ bp <- boxplot(ERRMAT,
 # Convert to factor
 Computers$cd <- as.factor(Computers$cd)
 
+# Remove column "multi", since it causes a defect covariance matrix
+Computers <- Computers[,-7]
+
 # create data partitions for training and testing
 inTrain  <-  createDataPartition( Computers$cd , p=3/4, list=FALSE)
 
@@ -166,9 +169,9 @@ for (b in (1:B)) {
   
   # QDA, does not work for some reason. Skip
  
-  #fit <- train(cd~.,data=Computers[inTrain,],method="qda",trControl=ctrl)
-  #pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
-  #ERRMAT[b,5] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
+  fit <- train(cd~.,data=Computers[inTrain,],method="qda",trControl=ctrl)
+  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  ERRMAT[b,5] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # PDA
   
@@ -178,9 +181,9 @@ for (b in (1:B)) {
   
   # NB - Negative Binomial, does not work for some reason. Skip
   
-  #fit <- train(cd~.,data=Computers[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
-  #pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
-  #ERRMAT[b,7] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
+  fit <- train(cd~.,data=Computers[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
+  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  ERRMAT[b,7] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # MDA - mixture da
  
