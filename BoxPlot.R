@@ -68,7 +68,7 @@ for (b in (1:B)) {
   
   # Random Forest
   
-  fit<-train(children~.,data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
+  fit<-train(children~., data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw") 
   ERRMAT[b,2] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
