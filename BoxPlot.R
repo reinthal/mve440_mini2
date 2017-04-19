@@ -120,36 +120,21 @@ bp <- boxplot(ERRMAT,
 
 ########## Continue with Computers
 
-# Convert numerical to class
-#newfac  <-  rep(0,dim(Computers)[1])
-#newfac[Computers$cd == "yes"]  <- "One"
-#newfac[Computers$cd == "no"]  <- "Two"
-#newfac  <-  as.factor(newfac)
-#Computers$cd  <-  newfac
-# Convert feature to be classified to factor
+# Convert to factor
 Computers$cd <- as.factor(Computers$cd)
 
 # create data partitions for training and testing
 inTrain  <-  createDataPartition( Computers$cd , p=3/4, list=FALSE)
 
-# Training data
-#trainW  <-  Computers[inTrain,-10]
-#testW  <-  Computers[-inTrain,-10]
-
-# Training labels
-#trainwY  <-  BudgetUK$children[inTrain]
-#testwY  <-  BudgetUK$children[-inTrain]
-
 # Compute the error B times
-B <- 1
+B <- 50
 ERRMAT <- matrix(0,B,8)
 
 # set the validation method to cross validation
 ctrl <- trainControl(method="cv",summaryFunction=multiClassSummary)
 
 
-b <- 1
-#for (b in (1:B)) {
+for (b in (1:B)) {
   
   inTrain  <-  createDataPartition(Computers$cd,p=3/4,list=FALSE)
   trainW  <-  Computers[inTrain,-6]
@@ -158,53 +143,53 @@ b <- 1
   testwY  <-  Computers$cd[-inTrain]
   
   # CART
-  fit <- train(cd~.,data=Computers[inTrain,],method="rpart",tuneLength=15,trControl=ctrl)
+  fit <- train(cd~.,data=Computers[inTrain,],method="rpart",trControl=ctrl)
   pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
   ERRMAT[b,1] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # Random Forest
-  fit <- train(cd~.,data=Computers[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
+  fit <- train(cd~.,data=Computers[inTrain,],method="ranger",trControl=ctrl)
   pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw") 
   ERRMAT[b,2] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # KNN
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
+  fit <- train(cd~.,data=Computers[inTrain,],method="knn",trControl=ctrl)
   pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
   ERRMAT[b,3] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # LDA
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
+  fit <- train(cd~.,data=Computers[inTrain,],method="lda",trControl=ctrl)
   pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
   ERRMAT[b,4] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
-  # QDA
+  # QDA, does not work for some reason. Skip
  
-  fit <- train(cd~.,data=Computers[inTrain,],method="qda",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
-  ERRMAT[b,5] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
+  #fit <- train(cd~.,data=Computers[inTrain,],method="qda",trControl=ctrl)
+  #pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  #ERRMAT[b,5] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # PDA
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="pda",tuneLength=15,trControl=ctrl)
+  fit <- train(cd~.,data=Computers[inTrain,],method="pda",trControl=ctrl)
   pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
   ERRMAT[b,6] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
-  # NB - Negative Binomial
+  # NB - Negative Binomial, does not work for some reason. Skip
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
-  ERRMAT[b,7] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
+  #fit <- train(cd~.,data=Computers[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
+  #pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  #ERRMAT[b,7] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # MDA - mixture da
  
-  fit <- train(cd~.,data=Computers[inTrain,],method="mda",tuneLength=15,trControl=ctrl)
+  fit <- train(cd~.,data=Computers[inTrain,],method="mda",trControl=ctrl)
   pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
   ERRMAT[b,8] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   print(b)
-#}
+}
 
 
 
