@@ -62,50 +62,114 @@ for (b in (1:B)) {
   
   
   # CART
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="rpart",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  fit <- train(children~.,
+               data=BudgetUK[inTrain,],
+               method="rpart",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw")
+  
   ERRMAT[b,1] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # Random Forest
   
-  fit<-train(children~.,data=BudgetUK[inTrain,],method="ranger",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw") 
+  fit<-train(children~.,
+             data=BudgetUK[inTrain,],
+             method="ranger",
+             tuneLength=15,
+             trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw") 
+  
   ERRMAT[b,2] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # KNN
   
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  fit <- train(children~.,
+               data=BudgetUK[inTrain,],
+               method="knn",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw")
+  
   ERRMAT[b,3] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # LDA
   
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="lda",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  fit <- train(children~.,
+               data=BudgetUK[inTrain,],
+               method="lda",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw")
+  
   ERRMAT[b,4] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # QDA
   
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="qda",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  fit <- train(children~.,
+               data=BudgetUK[inTrain,],
+               method="qda",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw")
+  
   ERRMAT[b,5] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # PDA
   
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="pda",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  fit <- train(children~.,
+               data=BudgetUK[inTrain,],
+               method="pda",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw")
+  
   ERRMAT[b,6] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
-  # NB - Negative Binomial
+  # NB - Naive Bayes
   
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  fit <- train(children~.,
+               data=BudgetUK[inTrain,],
+               method="nb",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw")
+  
   ERRMAT[b,7] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   # MDA - mixture da
   
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="mda",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
+  fit <- train(children~.,
+               data=BudgetUK[inTrain,],
+               method="mda",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=BudgetUK[-inTrain,-10],
+                type="raw")
+  
   ERRMAT[b,8] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
   print(b)
@@ -146,50 +210,107 @@ for (b in (1:B)) {
   testwY  <-  Computers$cd[-inTrain]
   
   # CART
-  fit <- train(cd~.,data=Computers[inTrain,],method="rpart",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="rpart",
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw")
+  
   ERRMAT[b,1] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # Random Forest
-  fit <- train(cd~.,data=Computers[inTrain,],method="ranger",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw") 
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="ranger",
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw") 
+  
   ERRMAT[b,2] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # KNN
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="knn",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="knn",
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw")
+  
   ERRMAT[b,3] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
-
+  
   
   # LDA
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="lda",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="lda",
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw")
+  
   ERRMAT[b,4] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # QDA, does not work for some reason. Skip
- 
-  fit <- train(cd~.,data=Computers[inTrain,],method="qda",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="qda",
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw")
+  
   ERRMAT[b,5] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # PDA
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="pda",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="pda",
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw")
+  
   ERRMAT[b,6] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # NB - Negative Binomial, does not work for some reason. Skip
   
-  fit <- train(cd~.,data=Computers[inTrain,],method="nb",tuneLength=15,trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="nb",
+               tuneLength=15,
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw")
+  
   ERRMAT[b,7] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   # MDA - mixture da
- 
-  fit <- train(cd~.,data=Computers[inTrain,],method="mda",trControl=ctrl)
-  pp <- predict(fit,newdata=Computers[-inTrain,-6],type="raw")
+  
+  fit <- train(cd~.,
+               data=Computers[inTrain,],
+               method="mda",
+               trControl=ctrl)
+  
+  pp <- predict(fit,
+                newdata=Computers[-inTrain,-6],
+                type="raw")
+  
   ERRMAT[b,8] <- length(pp[pp!=Computers$cd[-inTrain]])/length(pp)
   
   print(b)
