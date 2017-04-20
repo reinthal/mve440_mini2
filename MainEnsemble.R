@@ -125,7 +125,7 @@ jpeg('/chalmers/users/reinthal/Master/repos/mve440_mini2/figures/Computers-ENSEM
 bp  <-  boxplot(ERRMAT2,
                 ylab="Validation Error ",
                 col = 2:7,
-                names=c("CART","knn","lda","qda","pda","nb"),
+                names=c("CART","knn","lda","qda","pda","nb"), 
                 main=c("Computers"))
 
-def.off()
+ def.off()
