@@ -70,9 +70,9 @@ err <- ensemble(my_formula2, predict_col2,curr_data2,curr_method2,nr_classifiers
 ## Main for plots
 
 # Compute the error B times
-B <- 1
-ERRMAT1 <- matrix(0,B,7)
-ERRMAT2 <- matrix(0,B,7)
+B <- 50
+ERRMAT1 <- matrix(0,B,6)
+ERRMAT2 <- matrix(0,B,6)
 
 for (b in (1:B)) {
   print("iteration: ")
@@ -107,22 +107,25 @@ for (b in (1:B)) {
   ERRMAT1[b,6] <- ensemble(my_formula1, predict_col1, curr_data1, "nb", nr_classifiers1)
   ERRMAT2[b,6] <- ensemble(my_formula2, predict_col2,curr_data2,"nb",nr_classifiers2)
   
-  # MDA - mixture da
-
-  ERRMAT1[b,7] <- ensemble(my_formula1, predict_col1, curr_data1, "mda", nr_classifiers1)
-  ERRMAT2[b,7] <- ensemble(my_formula2, predict_col2,curr_data2,"mda",nr_classifiers2)
-  
 }
 
-
+# jpeg('/path/to/project/mve440_mini2/figures/BudgetUK-ENSEMBLE.png')
+jpeg('/chalmers/users/reinthal/Master/repos/mve440_mini2/figures/BudgetUK-ENSEMBLE.jpeg')
 
 bp  <-  boxplot(ERRMAT1,
-                ylab="Validation Error TEST BudgetUK",
+                ylab="Validation Error",
                 col = 2:7,
-                names=c("CART","knn","lda","qda","pda","nb","mda"))
+                names=c("CART","knn","lda","qda","pda","nb"),
+                main=c("BudgetUK"))
+dev.off()
+
+
+# Same here - add the relevant path
+jpeg('/chalmers/users/reinthal/Master/repos/mve440_mini2/figures/Computers-ENSEMBLE.jpg')
 bp  <-  boxplot(ERRMAT2,
-                ylab="Validation Error TEST Computers",
+                ylab="Validation Error ",
                 col = 2:7,
-                names=c("CART","knn","lda","qda","pda","nb","mda"))
+                names=c("CART","knn","lda","qda","pda","nb"),
+                main=c("Computers"))
 
-
+def.off()
