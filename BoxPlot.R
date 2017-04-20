@@ -174,7 +174,7 @@ for (b in (1:B)) {
   
   # KNN
   
-  fit <- train(children~.,data=BudgetUK[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
+  fit <- train(children ~.,data=BudgetUK[inTrain,],method="knn",tuneLength=15,trControl=ctrl)
   pp <- predict(fit,newdata=BudgetUK[-inTrain,-10],type="raw")
   ERRMAT[b,3] <- length(pp[pp!=BudgetUK$children[-inTrain]])/length(pp)
   
