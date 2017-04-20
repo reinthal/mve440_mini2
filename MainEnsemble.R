@@ -28,7 +28,6 @@ library(ranger)
 # Classifiers:
 # -----------
 # CART
-# RF
 # knn
 # lda
 # qda
@@ -38,14 +37,10 @@ library(ranger)
 
 
 
-############# Main
 
 # Data we want to examine
 data(BudgetUK, package = "Ecdat")
 data(Computers, package = "Ecdat")
-
-
-########## Start with BudgetUK
 
 # Convert numerical to class
 newfac  <-  rep(0,dim(BudgetUK)[1])
@@ -56,24 +51,78 @@ BudgetUK$children  <-  newfac
 
 
 # Unit test for  BudgetUK data
-my_formula <- children ~ .
-curr_data <- BudgetUK
-curr_method <- "lda"
-nr_classifiers <- 5
-predict_col <- 10
-err <- ensemble(my_formula, predict_col, curr_data, curr_method, nr_classifiers)
+my_formula1 <- children ~ .
+curr_data1 <- BudgetUK
+curr_method1 <- "lda"
+nr_classifiers1 <- 1
+predict_col1 <- 10
+err <- ensemble(my_formula1, predict_col1, curr_data1, curr_method1, nr_classifiers1)
 
 
 # Unit test for Computers data
+my_formula2 <- cd ~.
+predict_col2 <- 6
+curr_data2 <- Computers[,-7]
+curr_method2 <- "lda"
+nr_classifiers2 <- 10
+err <- ensemble(my_formula2, predict_col2,curr_data2,curr_method2,nr_classifiers2)
 
-my_formula <- premium ~.
-predict_col <- 8
-curr_data <- Computers[,-7]
-curr_method <- "lda"
-nr_classifiers <- 5
-err <- ensemble(my_formula, predict_col,curr_data,curr_method,nr_classifiers)
+## Main for plots
+
+# Compute the error B times
+B <- 1
+ERRMAT1 <- matrix(0,B,7)
+ERRMAT2 <- matrix(0,B,7)
+
+for (b in (1:B)) {
+  print("iteration: ")
+  print(b)
+  
+  # CART
+  ERRMAT1[b,1] <- ensemble(my_formula1, predict_col1, curr_data1, "rpart", nr_classifiers1)
+  ERRMAT2[b,1] <- ensemble(my_formula2, predict_col2,curr_data2,"rpart",nr_classifiers2)
+  
+  # KNN 
+  
+  ERRMAT1[b,2] <- ensemble(my_formula1, predict_col1, curr_data1, "knn", nr_classifiers1)
+  ERRMAT2[b,2] <- ensemble(my_formula2, predict_col2,curr_data2,"knn",nr_classifiers2)
+  
+  # LDA 
+
+  ERRMAT1[b,3] <- ensemble(my_formula1, predict_col1, curr_data1, "lda", nr_classifiers1)
+  ERRMAT2[b,3] <- ensemble(my_formula2, predict_col2,curr_data2,"lda",nr_classifiers2)
+  
+  # QDA
+  
+  ERRMAT1[b,4] <- ensemble(my_formula1, predict_col1, curr_data1, "qda", nr_classifiers1)
+  ERRMAT2[b,4] <- ensemble(my_formula2, predict_col2,curr_data2,"qda",nr_classifiers2)
+  
+  # PDA
+  
+  ERRMAT1[b,5] <- ensemble(my_formula1, predict_col1, curr_data1, "pda", nr_classifiers1)
+  ERRMAT2[b,5] <- ensemble(my_formula2, predict_col2,curr_data2,"pda",nr_classifiers2)
+  
+  # NB - Naive bayes 
+  
+  ERRMAT1[b,6] <- ensemble(my_formula1, predict_col1, curr_data1, "nb", nr_classifiers1)
+  ERRMAT2[b,6] <- ensemble(my_formula2, predict_col2,curr_data2,"nb",nr_classifiers2)
+  
+  # MDA - mixture da
+
+  ERRMAT1[b,7] <- ensemble(my_formula1, predict_col1, curr_data1, "mda", nr_classifiers1)
+  ERRMAT2[b,7] <- ensemble(my_formula2, predict_col2,curr_data2,"mda",nr_classifiers2)
+  
+}
 
 
 
+bp  <-  boxplot(ERRMAT1,
+                ylab="Validation Error TEST BudgetUK",
+                col = 2:7,
+                names=c("CART","knn","lda","qda","pda","nb","mda"))
+bp  <-  boxplot(ERRMAT2,
+                ylab="Validation Error TEST Computers",
+                col = 2:7,
+                names=c("CART","knn","lda","qda","pda","nb","mda"))
 
 

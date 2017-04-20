@@ -319,7 +319,7 @@ for (b in (1:B)) {
 
 
 bp  <-  boxplot(ERRMAT,
-              ylab="Cross Validation Error",
+              ylab="Validation Error",
               col = 2:8,
               names=c("CART","RF","knn","lda","qda","pda","nb","mda"))
-#hejhej
+
