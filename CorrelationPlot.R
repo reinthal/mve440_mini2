@@ -22,3 +22,4 @@ M1 <- cor(BudgetUK)
 M2 <- cor(Computers)
 p1 <- corrplot.mixed(M1, lower="ellipse", upper="circle")
 p2 <- corrplot.mixed(M2, lower="ellipse", upper="circle")
+

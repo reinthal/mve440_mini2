@@ -5,6 +5,7 @@ gc()
 
 
 library(Ecdat)
+library(tictoc)
 library(rpart)
 library(class)
 library(MASS)
@@ -53,10 +54,10 @@ BudgetUK$children  <-  newfac
 # Unit test for  BudgetUK data
 my_formula1 <- children ~ .
 curr_data1 <- BudgetUK
-curr_method1 <- "lda"
-nr_classifiers1 <- 1
+curr_method1 <- "rpart"
+nr_classifiers1 <- 100
 predict_col1 <- 10
-err <- ensemble(my_formula1, predict_col1, curr_data1, curr_method1, nr_classifiers1)
+tic(); err <- ensemble(my_formula1, predict_col1, curr_data1, curr_method1, nr_classifiers1); toc();
 
 
 # Unit test for Computers data
@@ -70,7 +71,7 @@ err <- ensemble(my_formula2, predict_col2,curr_data2,curr_method2,nr_classifiers
 ## Main for plots
 
 # Compute the error B times
-B <- 1
+B <- 25
 
 methods <- c("rpart","knn","lda","qda","nb")
 ERRMAT1 <- matrix(0,B,length(methods))
@@ -80,10 +81,9 @@ for (b in (1:B)) {
   print( paste("iteration: ", b) )
   print("-----------")
   for (method in methods) {
-    print('method: ')
-    print(method)
+    print(paste('method: ',method))
     ERRMAT1[b,1] <- ensemble(my_formula1, predict_col1, curr_data1, method, nr_classifiers1)
-    ERRMAT2[b,1] <- ensemble(my_formula2, predict_col2, curr_data2, method, nr_classifiers2)
+    #ERRMAT2[b,1] <- ensemble(my_formula2, predict_col2, curr_data2, method, nr_classifiers2)
   }  
 }
 
